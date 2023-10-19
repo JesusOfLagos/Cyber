@@ -1,4 +1,5 @@
-
+import { Request } from 'express';
+import jwt from 'jsonwebtoken';
 
 export interface IRateLimiter {
     windowMs: number,
@@ -40,7 +41,7 @@ export class TokenManager {
 
         return {
             token,
-            expiresIn: process.env.JWT_EXPIRES_IN
+            expiresIn: process.env.JWT_EXPIRES_IN as unknown as number
         };
     }
 
@@ -52,7 +53,7 @@ export class TokenManager {
         return jwt.decode(token) as TokenUser;
     }
 
-    public static getTokenFromHeader(req: Request): string {
+    public static getTokenFromHeader(req: Request): string | null {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             return req.headers.authorization.split(' ')[1];
         }
@@ -60,7 +61,7 @@ export class TokenManager {
         return null;
     }
 
-    public static getTokenFromCookie(req: Request): string {
+    public static getTokenFromCookie(req: Request): string | null {
         if (req.cookies && req.cookies.token) {
             return req.cookies.token;
         }
@@ -68,9 +69,9 @@ export class TokenManager {
         return null;
     }
 
-    public static getTokenFromQuery(req: Request): string {
+    public static getTokenFromQuery(req: Request): string | null {
         if (req.query && req.query.token) {
-            return req.query.token;
+            return req.query.token as string;
         }
 
         return null;

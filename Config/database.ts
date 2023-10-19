@@ -7,7 +7,7 @@ export default class Database {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-  };
+  } as ConnectOptions;
 
   constructor() {}
 
@@ -78,9 +78,9 @@ export default class Database {
         return mongoose.connection.db.collections();
     }
 
-    public async getDbIndexes(): Promise<any> {
-        return mongoose.connection.db.indexes();
-    }
+    // public async getDbIndexes(): Promise<any> {
+    //     return mongoose.connection.db.indexes();
+    // }
 
     public async getDbName(): Promise<any> {
         return mongoose.connection.db.databaseName;
@@ -94,11 +94,11 @@ export default class Database {
         return mongoose.connection.db.admin();
     }
 
-    public async getDbBuffer(): Promise<any> {
-        return mongoose.connection.db.buffer();
-    }
+    // public async getDbBuffer(): Promise<any> {
+    //     return mongoose.connection.db.buffer();
+    // }
 
-    public async getDbClose(): Promise<any> {
-        return mongoose.connection.db.close();
-    } 
+    // public async getDbClose(): Promise<any> {
+    //     return mongoose.connection.db.close();
+    // } 
 }
