@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 export interface IRateLimiter {
@@ -32,8 +32,15 @@ export interface IToken {
     expiresIn: number
 }
 
+export interface AuthenticatedRequest extends Request {
+    user: TokenUser
+}
 
-export class TokenManager {
+export interface ITokenRequest extends Request {
+    token: string
+}
+
+export class TokenManage {
     public static generateToken(user: TokenUser): IToken {
         const token = jwt.sign(user, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
@@ -75,5 +82,27 @@ export class TokenManager {
         }
 
         return null;
+    }
+}
+
+export class TokenManager {
+
+    static generateToken(user: TokenUser, secret: string, expiresIn ): IToken {
+        const token = jwt.sign(user, secret, {
+            expiresIn: expiresIn
+        });
+
+        return {
+            token,
+            expiresIn: expiresIn
+        };
+    }
+
+    static verifyToken(token: string, secret: string): TokenUser {
+        return jwt.verify(token, secret) as TokenUser;
+    }
+
+    static decodeToken(token: string): TokenUser {
+        return jwt.decode(token) as TokenUser;
     }
 }
