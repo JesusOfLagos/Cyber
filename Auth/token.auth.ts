@@ -40,54 +40,54 @@ export interface ITokenRequest extends Request {
     token: string
 }
 
-export class TokenManage {
-    public static generateToken(user: TokenUser): IToken {
-        const token = jwt.sign(user, process.env.JWT_SECRET, {
-            expiresIn: process.env.JWT_EXPIRES_IN
-        });
+// export class TokenManage {
+//     public static generateToken(user: TokenUser): IToken {
+//         const token = jwt.sign(user, process.env.JWT_SECRET, {
+//             expiresIn: process.env.JWT_EXPIRES_IN
+//         });
 
-        return {
-            token,
-            expiresIn: process.env.JWT_EXPIRES_IN as unknown as number
-        };
-    }
+//         return {
+//             token,
+//             expiresIn: process.env.JWT_EXPIRES_IN as unknown as number
+//         };
+//     }
 
-    public static verifyToken(token: string): TokenUser {
-        return jwt.verify(token, process.env.JWT_SECRET) as TokenUser;
-    }
+//     public static verifyToken(token: string): TokenUser {
+//         return jwt.verify(token, process.env.JWT_SECRET) as TokenUser;
+//     }
 
-    public static decodeToken(token: string): TokenUser {
-        return jwt.decode(token) as TokenUser;
-    }
+//     public static decodeToken(token: string): TokenUser {
+//         return jwt.decode(token) as TokenUser;
+//     }
 
-    public static getTokenFromHeader(req: Request): string | null {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-            return req.headers.authorization.split(' ')[1];
-        }
+//     public static getTokenFromHeader(req: Request): string | null {
+//         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+//             return req.headers.authorization.split(' ')[1];
+//         }
 
-        return null;
-    }
+//         return null;
+//     }
 
-    public static getTokenFromCookie(req: Request): string | null {
-        if (req.cookies && req.cookies.token) {
-            return req.cookies.token;
-        }
+//     public static getTokenFromCookie(req: Request): string | null {
+//         if (req.cookies && req.cookies.token) {
+//             return req.cookies.token;
+//         }
 
-        return null;
-    }
+//         return null;
+//     }
 
-    public static getTokenFromQuery(req: Request): string | null {
-        if (req.query && req.query.token) {
-            return req.query.token as string;
-        }
+//     public static getTokenFromQuery(req: Request): string | null {
+//         if (req.query && req.query.token) {
+//             return req.query.token as string;
+//         }
 
-        return null;
-    }
-}
+//         return null;
+//     }
+// }
 
 export class TokenManager {
 
-    static generateToken(user: TokenUser, secret: string, expiresIn ): IToken {
+    static generateToken(user: TokenUser, secret: string, expiresIn: any ): IToken {
         const token = jwt.sign(user, secret, {
             expiresIn: expiresIn
         });

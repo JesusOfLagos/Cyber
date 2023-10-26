@@ -1,3 +1,4 @@
+import { AuthManager } from "../../Services/Auth/auth.services";
 import { Routers } from "../index.route";
 
 export class UserRouter extends Routers {
@@ -7,14 +8,18 @@ export class UserRouter extends Routers {
             res.status(200).json({ message: 'Pong' })
         });
 
-        this.router.post('/api/v1/users/login', (req, res) => {
-            res.status(200).json({ message: 'Login Successful' })
-        });
+        this.router.post('/api/v1/users/login', AuthManager.LoginUser);
 
         this.router.post('/api/v1/users/register', (req, res) => {
-            res.status(200).json({ message: 'Login Successful' })
+            res.status(200).json({ message: 'Registration Successful' })
         });
-    }
+
+        this.router.post('/api/v1/users/logout', AuthManager.LogoutUser)
+        this.router.post('/api/v1/users/reset-password', AuthManager.ResetPassword)
+        this.router.post('/api/v1/users/forgot-password', AuthManager.ForgotPassword)
+        this.router.post('/api/v1/users/verify-link', AuthManager.VerifyEmail)
+}
+
 }
 
 export default new UserRouter();

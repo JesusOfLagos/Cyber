@@ -7,10 +7,6 @@ import { User } from '../../Models/user.model';
 import { MailManager } from '../Mail/mail.services';
 
 export class AuthManager {
-    static isAuth() {
-        return localStorage.getItem('token') ? true : false;
-    }
-
     static async RegisterUser(req: Request, res: Response) {
         const { email, password } = req.body
         const hashedPassword = await hashData(password)
@@ -18,7 +14,7 @@ export class AuthManager {
         if (USER) {
             return res.status(400).json({ message: "User already exists" })
         }
-        const user = await User.addUser(email, password)
+        const user = await User.addUser(email, hashedPassword)
         if (!user) {
             return res.status(500).json({ message: "Something went wrong" })
         }
@@ -49,6 +45,9 @@ export class AuthManager {
 
     static async LogoutUser(req: Request, res: Response) {
         const token = req.headers.authorization?.split(' ')[1];
+        if (!token) {
+            return res.status(401).json({ message: "Invalid token" })
+        }
         const decodedToken = TokenManager.verifyToken(token as string, config.auth.accessTokenSecret);
         const USER = await User.getUserByEmail(decodedToken.email)
         if (!USER) {
@@ -105,7 +104,7 @@ export class AuthManager {
     }
 
     static async ChangePassword (req: Request, res: Response) {
-        const userId = req.user.userId
+        const userId = req.body.userId
         const { oldPassword, newPassword } = req.body
         const USER: any = await User.getUserById(userId)
         const isMatch = await hashCompare(oldPassword, USER?.password)
