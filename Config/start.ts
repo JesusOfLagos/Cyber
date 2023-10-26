@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction, Express } from 'express';
+import { UserRouter } from '../Routers/User/user.route';
 
 export default class App {
     public app: Express;
@@ -14,6 +15,7 @@ export default class App {
 
     private initializeMiddlewares(): void {
         this.app.use(express.json());
+        this.app.use(new UserRouter().router)
     }
 
     private initializeControllers(controllers: any): void {
