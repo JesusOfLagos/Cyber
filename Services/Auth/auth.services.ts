@@ -5,11 +5,16 @@ import { hashCompare, hashData } from '../../Config/bcrypt';
 import { BlacklistTokens } from '../../Models/blacklistTokens';
 import { User } from '../../Models/user.model';
 import { MailManager } from '../Mail/mail.services';
+import bcrypt from 'bcrypt';
 
 export class AuthManager {
     static async RegisterUser(req: Request, res: Response) {
+        console.log("RegisterUser")
         const { email, password } = req.body
-        const hashedPassword = await hashData(password)
+        // const hashedPassword = await hashData(password)
+        // const hashedPassword = bcrypt.hashSync(password, 10);
+        // console.log("hashedPassword", hashedPassword)
+        const hashedPassword = password
         const USER = await User.getUserByEmail(email)
         if (USER) {
             return res.status(400).json({ message: "User already exists" })
@@ -33,14 +38,16 @@ export class AuthManager {
         if (!USER) {
             return res.status(404).json({ message: "User not found" })
         }
-        const isMatch = await hashCompare(password, USER.password)
+        // const isMatch = await hashCompare(password, USER.password)
+        const isMatch = password === USER.password
         if (!isMatch) {
             return res.status(404).json({ message: "Incorrect password" })
         }
-        return {
+        return res.status(200).json({
             token,
+            refreshToken,
             expiresIn: config.auth.accessTokenExpiresIn as unknown as number
-        };
+        })
     }
 
     static async LogoutUser(req: Request, res: Response) {

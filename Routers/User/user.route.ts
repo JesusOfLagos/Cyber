@@ -1,6 +1,7 @@
 import { AuthManager } from "../../Services/Auth/auth.services";
 import { Routers } from "../index.route";
 
+
 export class UserRouter extends Routers {
     constructor() {
         super();
@@ -10,9 +11,7 @@ export class UserRouter extends Routers {
 
         this.router.post('/api/v1/users/login', AuthManager.LoginUser);
 
-        this.router.post('/api/v1/users/register', (req, res) => {
-            res.status(200).json({ message: 'Registration Successful' })
-        });
+        this.router.post('/api/v1/users/register', AuthManager.RegisterUser)
 
         this.router.post('/api/v1/users/logout', AuthManager.LogoutUser)
         this.router.post('/api/v1/users/reset-password', AuthManager.ResetPassword)
