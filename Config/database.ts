@@ -1,12 +1,12 @@
 import mongoose, { ConnectOptions } from 'mongoose';
+import config from './config';
 
 export default class Database {
-  private DB_URI = 'mongodb://localhost:27017/ecommerce';
+  private DB_URI = config.db.mongodb.MONGO_URL as string;
 
   private DB_OPTIONS: ConnectOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
   } as ConnectOptions;
 
   constructor() {}

@@ -17,9 +17,9 @@ export default class App {
     }
 
     private initializeControllers(controllers: any): void {
-        controllers.forEach((controller: any) => {
-            this.app.use('/', controller.router);
-        });
+        // controllers.forEach((controller: any) => {
+        //     this.app.use('/', controller.router);
+        // });
     }
 
     public listen(): void {
