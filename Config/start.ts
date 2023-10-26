@@ -19,7 +19,7 @@ export default class App {
         this.app.use(express.json());
         this.app.use(new UserRouter().router)
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(cors(corsOptions))
+        this.app.use(cors)
     }
 
     private initializeControllers(controllers: any): void {
