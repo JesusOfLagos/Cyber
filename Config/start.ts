@@ -1,7 +1,7 @@
-import express, { Request, Response, NextFunction, Express } from 'express';
-import { UserRouter } from '../Routers/User/user.route';
-import { corsConfig } from './cors';
-import cors from 'cors';
+import express, { Request, Response, NextFunction, Express } from "express";
+import { UserRouter } from "../Routers/User/user.route";
+import { corsConfig } from "./cors";
+import cors from "cors";
 
 export default class App {
     public app: Express;
@@ -17,12 +17,12 @@ export default class App {
 
     private initializeMiddlewares(): void {
         this.app.use(express.json());
-        this.app.use(new UserRouter().router)
+        this.app.use(new UserRouter().router);
         this.app.use(express.urlencoded({ extended: true }));
-        this.app.use(cors(corsConfig))
+        this.app.use(cors(corsConfig));
         this.app.use((req: Request, res: Response, next: NextFunction) => {
-            res.status(404).json({ message: "Route Not found" })
-        })
+            res.status(404).json({ message: "Ooopps, Route Not found" });
+        });
     }
 
     private initializeControllers(controllers: any): void {
@@ -37,4 +37,3 @@ export default class App {
         });
     }
 }
-
