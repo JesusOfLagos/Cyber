@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction, Express } from 'express';
 import { UserRouter } from '../Routers/User/user.route';
-import { corsOptions } from './cors';
+import { corsConfig } from './cors';
 import cors from 'cors';
 
 export default class App {
@@ -19,7 +19,10 @@ export default class App {
         this.app.use(express.json());
         this.app.use(new UserRouter().router)
         this.app.use(express.urlencoded({ extended: true }));
-        // this.app.use(cors)
+        this.app.use(cors(corsConfig))
+        this.app.use((req: Request, res: Response, next: NextFunction) => {
+            res.status(404).json({ message: "Route Not found" })
+        })
     }
 
     private initializeControllers(controllers: any): void {
@@ -34,3 +37,4 @@ export default class App {
         });
     }
 }
+
